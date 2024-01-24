@@ -6,7 +6,9 @@
   :pagination="{
     clickable: true,
   }"
-  :modules="[Pagination]"
+    :mousewheel="true"
+  :modules="[Mousewheel, Pagination]"
+  :speed="1000"
 >
   <swiper-slide>
     <First />
@@ -28,7 +30,7 @@
 
   // Import Swiper Vue.js components
   import { Swiper, SwiperSlide } from 'swiper/vue';
-  import { Pagination } from 'swiper/modules';
+  import { Mousewheel, Pagination } from 'swiper/modules';
 
   // Import Swiper styles
   import 'swiper/css';

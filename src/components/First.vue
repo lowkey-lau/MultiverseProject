@@ -45,11 +45,23 @@ const playerOptions = {
 .first{
   width: 100vw;
   height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
 
 .videoBg{
+  position: absolute;
   width: 100%;
   height: 100%;
+  left: 0;
+  top: 0;
+
+    overflow: hidden;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-color: #000;
+
 }
 
 .video-js{
