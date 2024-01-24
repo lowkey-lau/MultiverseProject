@@ -8,9 +8,12 @@
   }"
   :modules="[Pagination]"
 >
-  <swiper-slide>Slide 1</swiper-slide>
-  <swiper-slide>Slide 2</swiper-slide>
-  <swiper-slide>Slide 3</swiper-slide>
+  <swiper-slide>
+    <First />
+  </swiper-slide>
+  <swiper-slide>
+    <Seconds/>
+  </swiper-slide>
 </swiper>
 
 <!-- 
@@ -22,7 +25,7 @@
 <script setup>
   import First from './components/First.vue'
   import Seconds from './components/Seconds.vue'
-  
+
   // Import Swiper Vue.js components
   import { Swiper, SwiperSlide } from 'swiper/vue';
   import { Pagination } from 'swiper/modules';
