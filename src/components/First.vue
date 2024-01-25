@@ -1,25 +1,33 @@
 <template>
   <div class="section first">
     <div class="videoBg">
-      <video-player :src="bgVideo" :controls="false" :loop="true" :volume="0.6" fill muted autoplay />
+      <video-player :src="bgVideo" :controls="false" :loop="true" fill :volume="0" muted autoplay />
     </div>
     <div class="scroll" ref="scroll">
-      <div class="content">
+      <div class="content" ref="content">
         <!-- 假设每次滚动都为100px  -->
-        <p
-          :style="[
-            {
-              opacity: parseIntY > index ? 1 - (parseIntY - index) * 0.25 : 1 - 0.25 * index + parseIntY * 0.25,
-              transform: `scale(${1 - 0.25 * index + 0.25 * parseIntY})`,
-              fontWeight: parseIntY == index ? 'bold' : 'normal',
-              color: parseIntY == index ? 'white' : 'black',
-            },
-          ]"
-          v-for="(item, index) in 20"
-          :key="index"
-        >
-          {{ parseIntY > index }} , {{ parseIntY }}, {{ index }}, Lorem ipsum dolor sit amet consectetur adipisicing
-        </p>
+        <div class="box" ref="box">
+          <p
+            :style="[
+              {
+                opacity: parseIntY > index ? 1 - (parseIntY - index) * 0.25 : 1 - 0.25 * index + parseIntY * 0.25,
+                transform: `scale(${parseIntY > index ? 1 - (parseIntY - index) * 0.25 : 1 - 0.25 * index + 0.25 * parseIntY})`,
+                fontWeight: parseIntY == index ? 'bold' : 'normal',
+                color: parseIntY == index ? 'white' : 'black',
+              },
+            ]"
+            v-for="(item, index) in 20"
+            :key="index"
+          >
+            {{ isBottom }}, Lorem ipsum dolor sit amet consectetur adipisicing
+          </p>
+
+          <!-- 这一块需要优化 -->
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+        </div>
       </div>
     </div>
     <div class="text">{{ x }}{{ y }}</div>
@@ -29,18 +37,38 @@
 <script setup>
 import bgVideo from "../assets/video/intro.mp4";
 
-import { computed, ref } from "vue";
-import { useScroll } from "@vueuse/core";
+import { computed, ref, watch } from "vue";
+import { useScroll, useElementSize } from "@vueuse/core";
+
+const emit = defineEmits(["changeMousewheelEnable"]);
 
 const scroll = ref(null);
+const box = ref(null);
 const { x, y, isScrolling, arrivedState, directions } = useScroll(scroll);
+const { width, height } = useElementSize(box);
 
 const parseIntY = computed(() => parseInt(y.value / 100));
+
+const isBottom = computed(() => arrivedState.bottom);
+
+watch(
+  () => isBottom.value,
+  (e1, _e1) => {
+    emit("changeMousewheelEnable", e1);
+  }
+);
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .section {
   position: relative;
+}
+
+.first {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 .scroll {
   overflow-y: auto;
@@ -59,7 +87,8 @@ const parseIntY = computed(() => parseInt(y.value / 100));
 
 .content {
   height: 100%;
-  margin-top: 50vh;
+  width: 100%;
+  transform: translateY(50%);
 
   p {
     display: flex;
@@ -71,6 +100,10 @@ const parseIntY = computed(() => parseInt(y.value / 100));
     margin: 0;
     white-space: nowrap;
     transition: 0.1s all;
+
+    &:last-child {
+      margin-bottom: 400px;
+    }
   }
 }
 
@@ -78,20 +111,13 @@ const parseIntY = computed(() => parseInt(y.value / 100));
   color: #888;
 }
 
-.first {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
-
 .videoBg {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 200%;
+  height: 200%;
   left: 0;
   top: 0;
-  opacity: 0.3;
+  opacity: 0.8;
   z-index: 0;
 
   overflow: hidden;
@@ -105,6 +131,10 @@ const parseIntY = computed(() => parseInt(y.value / 100));
   position: relative;
   width: 100% !important;
   height: 100% !important;
+}
+
+:deep(.vjs-tech) {
+  object-fit: fill !important;
 }
 
 .text {

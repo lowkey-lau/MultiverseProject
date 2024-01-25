@@ -1,22 +1,25 @@
 <template>
   <div class="main">
     <div class="wrapper">
-      <Narbar />
+      <Narbar :slideActive="state.slideActive" @changeSlideAcitve="changeSlideAcitve" />
       <div class="container">
         <swiper
           :direction="'vertical'"
           :pagination="{
             clickable: true,
           }"
-          :modules="[Pagination]"
+          :mousewheel="true"
+          :modules="[Mousewheel, Pagination]"
           :speed="1000"
+          @swiper="onSwiper"
+          @slideChange="onSlideChange"
         >
           <swiper-slide>
-            <First />
+            <First :slideActive="state.slideActive" @changeMousewheelEnable="changeMousewheelEnable" />
           </swiper-slide>
-          <!-- <swiper-slide>
-            <Seconds />
-          </swiper-slide> -->
+          <swiper-slide>
+            <Seconds :slideActive="state.slideActive" />
+          </swiper-slide>
         </swiper>
       </div>
     </div>
@@ -35,6 +38,40 @@ import { Mousewheel, Pagination } from "swiper/modules";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
+import { reactive, ref } from "vue";
+
+const mousewheelEnable = ref(false);
+
+const state = reactive({
+  swiper: null,
+  slideActive: 0,
+});
+
+const onSwiper = (e) => {
+  state.swiper = e;
+  state.swiper.disable();
+};
+
+const onSlideChange = (e) => {
+  state.slideActive = e.activeIndex;
+
+  // 这里需要判定一些条件，可以优化的
+  if (state.slideActive == 0) {
+    state.swiper.disable();
+  }
+};
+
+const changeSlideAcitve = (e) => {
+  state.swiper.enable();
+  state.swiper.slideTo(e);
+};
+
+const changeMousewheelEnable = (e) => {
+  if (e) {
+    mousewheelEnable.value = e;
+    state.swiper.enable();
+  }
+};
 </script>
 
 <style lang="scss" scoped>
