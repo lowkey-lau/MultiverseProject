@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="wrapper">
-      <Narbar :slideActive="state.slideActive" @changeSlideAcitve="changeSlideAcitve" />
+      <Narbar :slideActive="state.slideActive" :percent="state.percent" @changeSlideAcitve="changeSlideAcitve" />
       <div class="container">
         <swiper
           :direction="'vertical'"
@@ -15,7 +15,7 @@
           @slideChange="onSlideChange"
         >
           <swiper-slide>
-            <First :slideActive="state.slideActive" @changeMousewheelEnable="changeMousewheelEnable" />
+            <First :slideActive="state.slideActive" @changeMousewheelEnable="changeMousewheelEnable" @changePercent="changePercent" />
           </swiper-slide>
           <swiper-slide>
             <Seconds :slideActive="state.slideActive" />
@@ -45,6 +45,7 @@ const mousewheelEnable = ref(false);
 const state = reactive({
   swiper: null,
   slideActive: 0,
+  percent: 0,
 });
 
 const onSwiper = (e) => {
@@ -71,6 +72,10 @@ const changeMousewheelEnable = (e) => {
     mousewheelEnable.value = e;
     state.swiper.enable();
   }
+};
+
+const changePercent = (e) => {
+  state.percent = e;
 };
 </script>
 

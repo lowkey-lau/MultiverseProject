@@ -19,7 +19,7 @@
             v-for="(item, index) in 20"
             :key="index"
           >
-            {{ isBottom }}, Lorem ipsum dolor sit amet consectetur adipisicing
+            {{ parseInt((y / (height - 400)) * 100) }}, Lorem ipsum dolor sit amet consectetur adipisicing
           </p>
 
           <!-- 这一块需要优化 -->
@@ -40,7 +40,7 @@ import bgVideo from "../assets/video/intro.mp4";
 import { computed, ref, watch } from "vue";
 import { useScroll, useElementSize } from "@vueuse/core";
 
-const emit = defineEmits(["changeMousewheelEnable"]);
+const emit = defineEmits(["changeMousewheelEnable", "changePercent"]);
 
 const scroll = ref(null);
 const box = ref(null);
@@ -51,10 +51,19 @@ const parseIntY = computed(() => parseInt(y.value / 100));
 
 const isBottom = computed(() => arrivedState.bottom);
 
+const percent = computed(() => parseInt((y.value / (height.value - 400)) * 100));
+
 watch(
   () => isBottom.value,
   (e1, _e1) => {
     emit("changeMousewheelEnable", e1);
+  }
+);
+
+watch(
+  () => percent.value,
+  (e1, _e1) => {
+    emit("changePercent", e1);
   }
 );
 </script>
