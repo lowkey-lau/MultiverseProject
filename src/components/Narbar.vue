@@ -56,7 +56,7 @@ const changeNabsActive = (e) => {
     }
 
     &.active {
-      color: skyblue;
+      color: red;
     }
   }
 }
@@ -64,7 +64,7 @@ const changeNabsActive = (e) => {
 .line {
   height: 4px;
   border-radius: 16px;
-  background: skyblue;
+  background: red;
   position: absolute;
   left: 0;
   bottom: 0;

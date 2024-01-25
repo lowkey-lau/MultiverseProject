@@ -1,8 +1,9 @@
 <template>
   <div class="section first">
     <div class="videoBg">
-      <video-player :src="bgVideo" :controls="false" :loop="true" fill :volume="0" muted autoplay />
+      <video-player :src="bgVideo" :controls="false" :loop="true" playInline fill :volume="0" muted autoplay />
     </div>
+    <div class="imgBg"></div>
     <div class="scroll" ref="scroll">
       <div class="content" ref="content">
         <!-- 假设每次滚动都为100px  -->
@@ -12,7 +13,6 @@
               {
                 opacity: parseIntY > index ? 1 - (parseIntY - index) * 0.25 : 1 - 0.25 * index + parseIntY * 0.25,
                 transform: `scale(${parseIntY > index ? 1 - (parseIntY - index) * 0.25 : 1 - 0.25 * index + 0.25 * parseIntY})`,
-                fontWeight: parseIntY == index ? 'bold' : 'normal',
                 color: parseIntY == index ? 'white' : 'black',
               },
             ]"
@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-    <div class="text">{{ x }}{{ y }}</div>
+    <div class="text">{{ x }}，{{ y }}</div>
   </div>
 </template>
 
@@ -110,17 +110,42 @@ watch(
     white-space: nowrap;
     transition: 0.1s all;
 
+    @media screen and (max-width: 767px) {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
     &:last-child {
       margin-bottom: 400px;
     }
   }
 }
 
-.read-the-docs {
-  color: #888;
+.imgBg {
+  display: none;
+  @media screen and (max-width: 767px) {
+    display: block;
+  }
+
+  height: 100%;
+  width: 100%;
+
+  background-image: url(../assets/images/intro-background.jpg);
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-color: #000;
+  z-index: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .videoBg {
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+
   position: absolute;
   width: 200%;
   height: 200%;
