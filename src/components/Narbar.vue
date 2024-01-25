@@ -45,11 +45,15 @@ const changeNabsActive = (e) => {
     justify-content: center;
     align-items: center;
     font-size: 28px;
-    width: 200px;
+    width: 160px;
     height: 100%;
     cursor: pointer;
     transition: 0.4s all;
     position: relative;
+
+    @media screen and (max-width: 767px) {
+      font-size: 20px;
+    }
 
     &.active {
       color: skyblue;
@@ -58,7 +62,7 @@ const changeNabsActive = (e) => {
 }
 
 .line {
-  height: 8px;
+  height: 4px;
   border-radius: 16px;
   background: skyblue;
   position: absolute;
