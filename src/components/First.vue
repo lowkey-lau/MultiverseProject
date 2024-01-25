@@ -6,20 +6,19 @@
     <div class="scroll" ref="scroll">
       <div class="content">
         <!-- 假设每次滚动都为100px  -->
-
-        0.25 * index + (y / 100) * 0.25
-
         <p
           :style="[
             {
-              opacity: 1 - 0.25 * index + (y / 100) * 0.25,
-              transform: `scale(${1 - 0.25 * index + 0.25 * (y / 100)})`,
+              opacity: parseIntY > index ? 1 - (parseIntY - index) * 0.25 : 1 - 0.25 * index + parseIntY * 0.25,
+              transform: `scale(${1 - 0.25 * index + 0.25 * parseIntY})`,
+              fontWeight: parseIntY == index ? 'bold' : 'normal',
+              color: parseIntY == index ? 'white' : 'black',
             },
           ]"
           v-for="(item, index) in 20"
           :key="index"
         >
-          {{ y / 100 }}, {{ index }}, Lorem ipsum dolor sit amet consectetur adipisicing
+          {{ parseIntY > index }} , {{ parseIntY }}, {{ index }}, Lorem ipsum dolor sit amet consectetur adipisicing
         </p>
       </div>
     </div>
@@ -30,14 +29,19 @@
 <script setup>
 import bgVideo from "../assets/video/intro.mp4";
 
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useScroll } from "@vueuse/core";
 
 const scroll = ref(null);
 const { x, y, isScrolling, arrivedState, directions } = useScroll(scroll);
+
+const parseIntY = computed(() => parseInt(y.value / 100));
 </script>
 
 <style scoped>
+.section {
+  position: relative;
+}
 .scroll {
   overflow-y: auto;
   overflow-x: hidden;
@@ -45,10 +49,18 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(scroll);
   width: 100%;
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .content {
-  margin-top: 300px;
+  height: 100%;
+  margin-top: 50vh;
+
   p {
     display: flex;
     justify-content: center;
@@ -57,6 +69,8 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(scroll);
     font-size: 40px;
     padding: 0;
     margin: 0;
+    white-space: nowrap;
+    transition: 0.1s all;
   }
 }
 
