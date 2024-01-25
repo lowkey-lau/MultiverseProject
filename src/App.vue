@@ -1,43 +1,51 @@
-
-
 <template>
-  <swiper
-  :direction="'vertical'"
-  :pagination="{
-    clickable: true,
-  }"
-    :mousewheel="true"
-  :modules="[Mousewheel, Pagination]"
-  :speed="1000"
->
-  <swiper-slide>
-    <First />
-  </swiper-slide>
-  <swiper-slide>
-    <Seconds/>
-  </swiper-slide>
-</swiper>
-
-<!-- 
-  <First msg="Vite + Vue" />
-  <Seconds/> -->
+  <div class="main">
+    <div class="wrapper">
+      <Narbar />
+      <div class="container">
+        <swiper
+          :direction="'vertical'"
+          :pagination="{
+            clickable: true,
+          }"
+          :modules="[Pagination]"
+          :speed="1000"
+        >
+          <swiper-slide>
+            <First />
+          </swiper-slide>
+          <!-- <swiper-slide>
+            <Seconds />
+          </swiper-slide> -->
+        </swiper>
+      </div>
+    </div>
+  </div>
 </template>
 
-
 <script setup>
-  import First from './components/First.vue'
-  import Seconds from './components/Seconds.vue'
+import Narbar from "./components/Narbar.vue";
+import First from "./components/First.vue";
+import Seconds from "./components/Seconds.vue";
 
-  // Import Swiper Vue.js components
-  import { Swiper, SwiperSlide } from 'swiper/vue';
-  import { Mousewheel, Pagination } from 'swiper/modules';
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Mousewheel, Pagination } from "swiper/modules";
 
-  // Import Swiper styles
-  import 'swiper/css';
-  import 'swiper/css/pagination';
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.main,
+.wrapper {
+  height: 100vh;
+}
+
+.container {
+  height: 100%;
+}
 .swiper {
   width: 100%;
   height: 100%;
@@ -60,5 +68,4 @@
   height: 100%;
   object-fit: cover;
 }
-
 </style>
