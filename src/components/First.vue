@@ -114,7 +114,7 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(scroll);
 console.log(arrivedState.top);
 const { width, height } = useElementSize(box);
 
-const parseIntY = computed(() => parseInt(y.value / 100));
+const parseIntY = computed(() => Math.floor(y.value / 100));
 
 const isBottom = computed(() => arrivedState.bottom);
 
