@@ -5,6 +5,14 @@
       <div class="videoBg-shadow"></div>
     </div>
     <div class="imgBg"></div>
+
+    <transition name="fade">
+      <div class="intro" v-show="y <= 200">
+        <p>Feed is an intelligent property rights and payments platform, using intelligent software and digital security that goes well beyond 'military-grade' to give users true ownership of their data and IP.</p>
+        <p>Feed facilitates trusted exchanges of users' progressively-perfecting data assets with businesses, researchers, and governments in a <b>trusted</b>, audited, and independently verifiable manner; on their own terms and conditions.</p>
+      </div>
+    </transition>
+
     <div class="scroll" ref="scroll">
       <div class="content" ref="content">
         <!-- 假设每次滚动都为100px  -->
@@ -258,5 +266,62 @@ watch(
   background: yellow;
   color: red;
   z-index: 999;
+}
+
+.intro {
+  position: absolute;
+  font-size: 12px;
+  bottom: 0;
+  left: 0;
+  padding: 25px;
+  color: #fff;
+  width: 420px;
+  text-align: left;
+  opacity: 1;
+
+  @media screen and (max-width: 767px) {
+    display: none !important;
+  }
+
+  p {
+    margin: 0 0 10px;
+  }
+}
+
+/* 定义动画 */
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  animation: fade-in 0.5s;
+}
+
+.fade-leave {
+  opacity: 1;
+}
+
+.fade-leave-active {
+  animation: fade-out 0.5s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
 }
 </style>
