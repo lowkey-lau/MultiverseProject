@@ -10,9 +10,11 @@
           }"
           :mousewheel="true"
           :modules="[Mousewheel, Pagination]"
-          :speed="1000"
+          :speed="2000"
           @swiper="onSwiper"
           @slideChange="onSlideChange"
+          @beforeSlideChangeStart="onBeforeSlideChangeStart"
+          @slideChangeTransitionEnd="onSlideChangeTransitionEnd"
         >
           <swiper-slide>
             <First :slideActive="state.slideActive" @changeMousewheelEnable="changeMousewheelEnable" @changePercent="changePercent" />
@@ -21,6 +23,9 @@
             <Seconds :slideActive="state.slideActive" />
           </swiper-slide>
         </swiper>
+
+        <div class="fill top" :class="[state.slideChangeType == 0 ? 'up' : 'down', { change: state.slideChangeFlag }]"></div>
+        <div class="fill bottom" :class="[state.slideChangeType == 0 ? 'up' : 'down', { change: state.slideChangeFlag }]"></div>
       </div>
     </div>
   </div>
@@ -46,6 +51,8 @@ const state = reactive({
   swiper: null,
   slideActive: 0,
   percent: 0,
+  slideChangeType: 0, //0下，1上
+  slideChangeFlag: false,
 });
 
 const onSwiper = (e) => {
@@ -54,12 +61,22 @@ const onSwiper = (e) => {
 };
 
 const onSlideChange = (e) => {
+  state.slideChangeType = state.slideActive > e.activeIndex ? 1 : 0;
+  state.slideChangeFlag = true;
+
   state.slideActive = e.activeIndex;
 
   // 这里需要判定一些条件，可以优化的
   if (state.slideActive == 0) {
     state.swiper.disable();
   }
+};
+
+const onBeforeSlideChangeStart = () => {
+  state.slideChangeFlag = true;
+};
+const onSlideChangeTransitionEnd = () => {
+  state.slideChangeFlag = false;
 };
 
 const changeSlideAcitve = (e) => {
@@ -93,6 +110,7 @@ const changePercent = (e) => {
 
 .container {
   padding: 15px;
+  position: relative;
 }
 .swiper {
   width: 100%;
@@ -115,5 +133,61 @@ const changePercent = (e) => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.fill {
+  z-index: 1;
+  transform: translate(0%, -100%);
+  left: 0;
+  height: 100%;
+  top: 0;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+
+  &.top {
+    background-color: rgb(230, 230, 230);
+    &.change {
+      &.down {
+        animation: moveDown 2s ease-in-out;
+      }
+
+      &.up {
+        animation: moveUp 2s ease-in-out;
+      }
+    }
+  }
+  &.bottom {
+    background-color: rgb(53, 1, 127);
+    &.change {
+      &.down {
+        animation: moveDown 2s 0.1s ease-in-out;
+      }
+
+      &.up {
+        animation: moveUp 2s 0.1s ease-in-out;
+      }
+    }
+  }
+}
+
+@keyframes moveDown {
+  0% {
+    transform: translate(0, -100%);
+  }
+
+  100% {
+    transform: translate(0, 100%);
+  }
+}
+
+@keyframes moveUp {
+  0% {
+    transform: translate(0, 100%);
+  }
+
+  100% {
+    transform: translate(0, -100%);
+  }
 }
 </style>
