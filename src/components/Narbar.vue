@@ -2,12 +2,16 @@
   <div class="navbar">
     <div class="navbar-wrapper">
       <div class="navbar-nav" :class="{ active: props.slideActive == 0 }" @click="changeNabsActive(0)">
-        <span> First </span>
-        <div class="line" :style="{ width: `${percent}%` }" v-show="props.slideActive == 0"></div>
+        <span> First</span>
+        <div class="process" v-show="props.slideActive == 0">
+          <div class="process-inner" :style="{ width: `${percent}%` }"></div>
+        </div>
       </div>
       <div class="navbar-nav" :class="{ active: props.slideActive == 1 }" @click="changeNabsActive(1)">
         <span> Seconds </span>
-        <div class="line full" v-show="props.slideActive == 1"></div>
+        <div class="process" v-show="props.slideActive == 1">
+          <div class="process-inner full"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -30,47 +34,50 @@ const changeNabsActive = (e) => {
 .navbar {
   position: fixed;
   width: 100%;
-  height: 60px;
   z-index: 9;
+  padding: 45px 0;
 
   &-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+    height: 30px;
   }
 
   &-nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 28px;
-    width: 160px;
+    width: 120px;
     height: 100%;
     cursor: pointer;
     transition: 0.4s all;
     position: relative;
-
-    @media screen and (max-width: 767px) {
-      font-size: 20px;
-    }
-
-    &.active {
-      color: red;
-    }
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-family: "Avenir Next Regular", sans-serif;
   }
 }
 
-.line {
-  height: 4px;
-  border-radius: 16px;
+.process {
+  height: 5px;
   background: red;
   position: absolute;
   left: 0;
   bottom: 0;
+  background-color: #b3b3b3;
+  width: 100%;
 
-  &.full {
-    width: 100%;
+  &-inner {
+    height: 100%;
+    background-color: #fff;
+    transition: 0.2s all;
+
+    .full {
+      width: 100%;
+    }
   }
 }
 </style>

@@ -80,13 +80,19 @@ const changePercent = (e) => {
 </script>
 
 <style lang="scss" scoped>
-.main,
-.wrapper {
+.main {
   height: 100vh;
+  overflow: hidden;
+  background-color: #e6e6e6;
+}
+
+.wrapper,
+.container {
+  height: 100%;
 }
 
 .container {
-  height: 100%;
+  padding: 15px;
 }
 .swiper {
   width: 100%;

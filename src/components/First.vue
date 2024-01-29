@@ -1,36 +1,19 @@
 <template>
   <div class="section first">
     <div class="videoBg">
-      <video-player :src="bgVideo" :controls="false" :loop="true" playInline fill :volume="0" muted autoplay />
+      <video-player :src="bgVideo" :controls="false" :loop="true" :width="1620" :height="910" playInline fill :volume="0" muted autoplay />
+      <div class="videoBg-shadow"></div>
     </div>
     <div class="imgBg"></div>
     <div class="scroll" ref="scroll">
       <div class="content" ref="content">
         <!-- 假设每次滚动都为100px  -->
         <div class="box" ref="box">
-          <p
-            :style="[
-              {
-                opacity: parseIntY > index ? 1 - (parseIntY - index) * 0.25 : 1 - 0.25 * index + parseIntY * 0.25,
-                transform: `scale(${parseIntY > index ? 1 - (parseIntY - index) * 0.25 : 1 - 0.25 * index + 0.25 * parseIntY})`,
-                color: parseIntY == index ? 'white' : 'black',
-              },
-            ]"
-            v-for="(item, index) in 20"
-            :key="index"
-          >
-            {{ parseInt((y / (height - 400)) * 100) }}, Lorem ipsum dolor sit amet consectetur adipisicing
-          </p>
-
-          <!-- 这一块需要优化 -->
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
-          <p>&nbsp;</p>
+          <p :style="getStyles(index)" v-for="(item, index) in messages" :key="index" v-html="item.bold ? `<strong><i>${item.msg}</i></strong>` : item.msg"></p>
         </div>
       </div>
     </div>
-    <div class="text">{{ x }}，{{ y }}</div>
+    <div class="text">{{ y / 100 }},{{ arrivedState.top }}, {{ arrivedState.bottom }},{{ x }}，{{ y }}</div>
   </div>
 </template>
 
@@ -40,18 +23,102 @@ import bgVideo from "../assets/video/intro.mp4";
 import { computed, ref, watch } from "vue";
 import { useScroll, useElementSize } from "@vueuse/core";
 
+const messages = [
+  {
+    msg: "When you want something, ",
+    bold: false,
+  },
+
+  {
+    msg: "all the universe conspires ",
+    bold: false,
+  },
+  {
+    msg: "in helping you to achieve it.",
+    bold: false,
+  },
+  {
+    msg: "Paulo Coelho",
+    bold: true,
+  },
+  {
+    msg: "<br/><br />",
+    bold: false,
+  },
+  {
+    msg: "<br/><br />",
+    bold: false,
+  },
+  {
+    msg: "Feed is that conspiracy:",
+    bold: false,
+  },
+  {
+    msg: "the conspiracy of trust.",
+    bold: false,
+  },
+  {
+    msg: "<br/><br />",
+    bold: false,
+  },
+  {
+    msg: "<br/><br />",
+    bold: false,
+  },
+  {
+    msg: "Trust is the single",
+    bold: false,
+  },
+  {
+    msg: "most important ingredient",
+    bold: false,
+  },
+  {
+    msg: "missing from digital relationships.",
+    bold: false,
+  },
+  {
+    msg: "<br/><br />",
+    bold: false,
+  },
+  {
+    msg: "<br/><br />",
+    bold: false,
+  },
+  {
+    msg: "<br/><br />",
+    bold: false,
+  },
+];
+
+const getStyles = (index) => {
+  const opacity = 0.25;
+
+  return arrivedState.top
+    ? {
+        opacity: 1 - index * opacity,
+        transform: `matrix(${1 - index * 0.1}, 0, 0, ${1 - index * 0.1}, 0, 0)`, //判断是否为第一帧
+      }
+    : {
+        opacity: y.value / 100 > index ? 1 - (y.value / 100 - index) * 0.5 : 1 - (index - y.value / 100) * opacity,
+        transform: `matrix(${1 + (y.value / 100 - index) * 0.1}, 0, 0, ${1 + (y.value / 100 - index) * 0.1}, 0, 0)`,
+      };
+};
+
 const emit = defineEmits(["changeMousewheelEnable", "changePercent"]);
 
 const scroll = ref(null);
 const box = ref(null);
 const { x, y, isScrolling, arrivedState, directions } = useScroll(scroll);
+
+console.log(arrivedState.top);
 const { width, height } = useElementSize(box);
 
 const parseIntY = computed(() => parseInt(y.value / 100));
 
 const isBottom = computed(() => arrivedState.bottom);
 
-const percent = computed(() => parseInt((y.value / (height.value - 400)) * 100));
+const percent = computed(() => (arrivedState.bottom ? 100 : (y.value / (height.value - 400)) * 100));
 
 watch(
   () => isBottom.value,
@@ -97,26 +164,25 @@ watch(
 .content {
   height: 100%;
   width: 100%;
-  transform: translateY(50%);
+  transform: translateY(33.33%);
+  position: relative;
 
   p {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    font-size: 40px;
-    padding: 0;
-    margin: 0;
     white-space: nowrap;
-    transition: 0.1s all;
+    color: #fff;
+    font-size: 48px;
+    margin: 0 0 10px;
+    // position: absolute;
+    // left: 0;
+    // top: 0;
+    width: 100%;
 
     @media screen and (max-width: 767px) {
-      font-size: 24px;
-      font-weight: bold;
+      font-size: 22px;
     }
 
-    &:last-child {
-      margin-bottom: 400px;
+    &:first-child {
+      position: relative;
     }
   }
 }
@@ -147,8 +213,8 @@ watch(
   }
 
   position: absolute;
-  width: 200%;
-  height: 200%;
+  width: 100%;
+  height: 100%;
   left: 0;
   top: 0;
   opacity: 0.8;
@@ -159,6 +225,17 @@ watch(
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-color: #000;
+
+  &-shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    opacity: 0.3;
+    background-color: rgb(0, 0, 0);
+  }
 }
 
 .video-js {

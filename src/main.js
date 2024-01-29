@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 
 import "normalize.css/normalize.css";
+import "./style.css";
 
 import VueVideoPlayer from "@videojs-player/vue";
 import "video.js/dist/video-js.css";

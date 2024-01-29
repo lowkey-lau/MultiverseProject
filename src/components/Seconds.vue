@@ -1,5 +1,5 @@
 <template>
-  <div class="section seconds"></div>
+  <div class="section seconds">感谢观看</div>
 </template>
 
 <script setup></script>
@@ -9,5 +9,10 @@
   height: 100%;
   width: 100%;
   background: grey;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
 }
 </style>
