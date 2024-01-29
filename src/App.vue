@@ -149,11 +149,11 @@ const changePercent = (e) => {
     background-color: rgb(230, 230, 230);
     &.change {
       &.down {
-        animation: moveDown 2s ease-in-out;
+        animation: moveDown 1.8s ease-in-out;
       }
 
       &.up {
-        animation: moveUp 2s ease-in-out;
+        animation: moveUp 1.8s ease-in-out;
       }
     }
   }
@@ -161,11 +161,11 @@ const changePercent = (e) => {
     background-color: rgb(53, 1, 127);
     &.change {
       &.down {
-        animation: moveDown 2s 0.1s ease-in-out;
+        animation: moveDown 1.8s 0.2s ease-in-out;
       }
 
       &.up {
-        animation: moveUp 2s 0.1s ease-in-out;
+        animation: moveUp 1.8s 0.2s ease-in-out;
       }
     }
   }

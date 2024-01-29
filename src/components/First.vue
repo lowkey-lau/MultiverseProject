@@ -155,6 +155,7 @@ watch(
   z-index: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
 
   &::-webkit-scrollbar {
     display: none;
@@ -162,10 +163,11 @@ watch(
 }
 
 .content {
-  height: 100%;
   width: 100%;
-  transform: translateY(33.33%);
+  // transform: translateY(33.33%);
   position: relative;
+  height: 100%;
+  top: 50%;
 
   p {
     white-space: nowrap;
