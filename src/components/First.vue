@@ -181,6 +181,7 @@ watch(
 
     @media screen and (max-width: 767px) {
       font-size: 22px;
+      min-height: 100px;
     }
 
     &:first-child {
